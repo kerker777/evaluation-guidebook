@@ -21,15 +21,16 @@
 - ✅ contents/troubleshooting/troubleshooting-reproducibility.md
 
 ## 待翻譯
-- ⏳ yearly_dives/2023-year-of-open-source.md
-- ⏳ yearly_dives/2024-evals-thoughts-from-iclr.md
-- ⏳ yearly_dives/2025-evaluations-for-useful-models.md
+（無）
 
 ## 本次新完成
 - ✅ README.md
 - ✅ resources/about-NLP.md
 - ✅ resources/about-evaluation.md
 - ✅ translations/CONTRIBUTING.md
+- ✅ yearly_dives/2023-year-of-open-source.md
+- ✅ yearly_dives/2024-evals-thoughts-from-iclr.md
+- ✅ yearly_dives/2025-evaluations-for-useful-models.md
 
 ## 總計
-已完成: 22 / 25
+已完成: 25 / 25 ✨
