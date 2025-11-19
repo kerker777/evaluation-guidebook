@@ -1,5 +1,8 @@
 # 翻譯進度追蹤
 
+## 說明
+所有翻譯檔案存放於 `translations/zh-tw/` 目錄
+
 ## 已完成翻譯
 - ✅ contents/automated-benchmarks/basics.md
 - ✅ contents/automated-benchmarks/designing-your-automatic-evaluation.md
