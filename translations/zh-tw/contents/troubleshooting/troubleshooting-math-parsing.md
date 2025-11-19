@@ -1,22 +1,19 @@
-# 使用LaTeX 评估数学能力
+# 使用 LaTeX 評估數學能力
 
-解析 latex 很难。这个问题在评估输出为 $\LaTeX$ 的模型时经常会遇到，例如 HuggingFace 的 [数学评估基准](https://huggingface.co/datasets/lighteval/MATH)。
+解析 LaTeX 是一件困難的事。當評估一個預期輸出為 $\LaTeX$ 格式的模型時，這就成了一個問題。[MATH 基準測試](https://huggingface.co/datasets/lighteval/MATH)就是這樣的案例。
 
-这个基准使用 $\LaTeX$ 来表示数学领域的计算和符号。评估难点在于对模型输出与标准答案的解析和比较。
-结果表明，解析 $\LaTeX$ 没有标准方法。
+這個基準測試使用 $\LaTeX$ 來表示數學運算和符號。評估這項任務理應只是解析並比較標準答案（ground truth）與模型輸出的問題。但事實證明，解析 $\LaTeX$ 並沒有所謂正確的方法：
 
 
-![](../../../../assets/sympy_doc.png)  
-*摘自 [`sympy`](https://github.com/sympy/sympy) 文档*
+![](../../../../assets/sympy_doc.png)
+*摘自 [`sympy`](https://github.com/sympy/sympy) 的文件*
 
-lm-evaluation 框架使用 [`sympy`](https://github.com/sympy/sympy) (一个用于符号数学的 Python 库) 来对 latex 进行解析和比较。 
-使用 `sympy` 解析真值 (用真值自身对比测试) 只能得到约 0.94 的准确率。
-怎么会是这样呢？后来发现 `sympy` 无法解析某些 (标准的 $\LaTeX$) 表达式。
+lm-evaluation harness 使用 [`sympy`](https://github.com/sympy/sympy)（一個 Python 符號數學函式庫）來解析 LaTeX 並比較運算式。當使用 `sympy` 嘗試解析標準答案時（將標準答案與其自身比對），我們只得到約 0.94 的準確率。怎麼會這樣？原來是因為 `sympy` 無法解析某些（正確的 $\LaTeX$）運算式。
 
 例如：
 
 ```
-couldn't parse one of [0,1) 或 [0,1)， I expected one of these: ']'
+couldn't parse one of [0,1) or [0,1), I expected one of these: ']'
 [0,1)
 ~~^
 ```
@@ -33,23 +30,22 @@ couldn't parse one of -\frac{1}{{}2x} or -\frac{1}{{}2x}, I don't understand thi
 ~~~~~~~~~~~^
 ```
 
-### 如何缓解这个问题？
+### 如何解決這個問題？
 
-重写 $\LaTeX$ [语法](https://github.com/sympy/sympy/blob/master/sympy/parsing/latex/lark/grammar/latex.lark) 并在代码中添加必须功能；或者往代码里添加人工检查来提高模型得分。
-在掉入问题陷阱之后，我们决定在代码中添加字符串比较检查，这方法已经足以缓解。
+您可以重新撰寫 $\LaTeX$ [文法規則](https://github.com/sympy/sympy/blob/master/sympy/parsing/latex/lark/grammar/latex.lark)，在程式碼中加入所需的功能，或是在程式碼中新增手動檢查來改善模型分數。在差點陷入深層的兔子洞之後，我們決定在程式碼中加入字串比較檢查就足夠了。
 
-![Lm Eval 工具修复](../../../../assets/lm_eval_diff.png)  
-*LM 评估工具修复*
+![修正 Lm Eval Harness](../../../../assets/lm_eval_diff.png)
+*對 LM Evaluation Harness 的修正*
 
-### 结果
+### 結果
 
-修复前后模型 top25 对比结果表格如下：
+以下表格比較了前 25 個模型在修正前後的結果。
 
 <div id="xdihwljbql" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
   <tr class="gt_heading">
-    <td colspan="5" class="gt_heading gt_title gt_font_normal">解析器修复前后模型在 MATH 基准测试结果对比</td>
+    <td colspan="5" class="gt_heading gt_title gt_font_normal">原始版本與修正後解析器在 MATH 基準測試上的比較</td>
   </tr>
 <tr class="gt_col_headings gt_spanner_row">
   <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" scope="col" id="Model">Model</th>
